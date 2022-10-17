@@ -37,10 +37,22 @@ export class PostService {
   }
 
   async get(input: QueryPostDto) {
-    const { pageSize = DEFAULT_PAGE_SIZE, pageIndex = DEFAULT_PAGE_INDEX } =
-      input;
+    const {
+      pageSize = DEFAULT_PAGE_SIZE,
+      pageIndex = DEFAULT_PAGE_INDEX,
+      title,
+    } = input;
+
+    const findQuery: Record<string, any> = {};
+    if (title) {
+      findQuery.title = {
+        contains: title,
+        mode: 'insensitive',
+      };
+    }
 
     const posts = await this.prisma.post.findMany({
+      where: findQuery,
       skip: pageSize * (pageIndex - 1),
       take: pageSize,
     });
