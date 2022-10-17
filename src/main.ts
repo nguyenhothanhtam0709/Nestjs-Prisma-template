@@ -10,6 +10,7 @@ import { customExceptionFactory } from './bootstrap/exception';
 import { configLogger } from './bootstrap/logger';
 import { setupSwagger } from './bootstrap/swagger';
 import * as morgan from 'morgan';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -20,7 +21,12 @@ async function bootstrap() {
   app.useLogger(configLogger(configService, 'backend'));
   app.flushLogs();
 
-  // app.use(helmet());
+  if (
+    configService.get<string>(ENV_VAR_NAMES.NODE_ENV) === NODE_ENV_ENUM.PROD
+  ) {
+    app.use(helmet());
+  }
+
   app.enableCors();
 
   app.useGlobalFilters(new CustomExceptionFilter());
