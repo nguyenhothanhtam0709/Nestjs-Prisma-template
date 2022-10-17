@@ -15,6 +15,7 @@ export const ENV_VAR_NAMES = {
 
 export enum NODE_ENV_ENUM {
   DEV = 'dev',
+  TEST = 'test',
   STAGING = 'staging',
   PROD = 'prod',
 }

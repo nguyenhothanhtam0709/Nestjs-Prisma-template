@@ -10,7 +10,12 @@ export const registerConfigModule = () =>
     validationSchema: joi.object({
       [ENV_VAR_NAMES.NODE_ENV]: joi
         .string()
-        .valid(NODE_ENV_ENUM.DEV, NODE_ENV_ENUM.STAGING, NODE_ENV_ENUM.PROD)
+        .valid(
+          NODE_ENV_ENUM.DEV,
+          NODE_ENV_ENUM.TEST,
+          NODE_ENV_ENUM.STAGING,
+          NODE_ENV_ENUM.PROD,
+        )
         .default(NODE_ENV_ENUM.DEV),
       [ENV_VAR_NAMES.API_PORT]: joi.number().default(DEFAULT_API_PORT),
       [ENV_VAR_NAMES.DATABASE_URL]: joi.string().required(),
