@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: backend
+    image: backend:1.0.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        API_PORT: $API_PORT
+    ports:
+      - $API_PORT:$API_PORT
+    networks:
+      - db
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: postgres
+    image: postgres:15-alpine3.16
+    ports:
+      - "5432:5432"
+    volumes:
+      - /data/postgres:/data/postgres
+    env_file:
+      - docker.env
+    networks:
+      - db
+
+networks:
+  db:
+    driver: bridge
