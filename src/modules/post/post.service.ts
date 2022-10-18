@@ -64,6 +64,7 @@ export class PostService {
       pageSize = DEFAULT_PAGE_SIZE,
       pageIndex = DEFAULT_PAGE_INDEX,
       title,
+      categories,
     } = input;
 
     const findQuery: Record<string, any> = {};
@@ -71,6 +72,15 @@ export class PostService {
       findQuery.title = {
         contains: title,
         mode: 'insensitive',
+      };
+    }
+    if (categories?.length) {
+      findQuery.categories = {
+        some: {
+          name: {
+            in: categories,
+          },
+        },
       };
     }
 
