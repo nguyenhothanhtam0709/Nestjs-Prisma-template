@@ -23,7 +23,7 @@ export function IsType(
   types: (keyof typeof typeValidator)[],
   validationOptions?: ValidationOptions,
 ) {
-  return function (object: Object, propertyName: string) {
+  return function (object: unknown, propertyName: string) {
     registerDecorator({
       name: 'IsType',
       target: object.constructor,

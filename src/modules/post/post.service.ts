@@ -1,14 +1,8 @@
 import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@commons/const/paginate';
 import { PaginateResult } from '@commons/DTO/paginate';
 import { ERROR_MESSAGE } from '@commons/enums/errorMessage';
-import { PrismaError } from '@commons/enums/prismaError';
 import { mapPrismaError } from '@commons/utils/error';
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { POST_JOIN_AND_SELECT } from './const/post';
 import { CreatePostDto } from './DTO/createPost.dto';
