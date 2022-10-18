@@ -2,6 +2,7 @@ import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@commons/const/paginate';
 import { PaginateResult } from '@commons/DTO/paginate';
 import { ERROR_MESSAGE } from '@commons/enums/errorMessage';
 import { PrismaError } from '@commons/enums/prismaError';
+import { mapPrismaError } from '@commons/utils/error';
 import {
   BadRequestException,
   Injectable,
@@ -76,7 +77,7 @@ export class PostService {
       skip: pageSize * (pageIndex - 1),
       take: pageSize,
     });
-    const totalCount = await this.prisma.post.count();
+    const totalCount = await this.prisma.post.count({ where: findQuery });
 
     return new PaginateResult(posts, totalCount, pageSize, pageIndex);
   }
@@ -126,16 +127,7 @@ export class PostService {
       });
       return post;
     } catch (error) {
-      if (
-        error instanceof PrismaClientKnownRequestError &&
-        error.code == PrismaError.RecordDoesNotExist
-      ) {
-        throw new BadRequestException(
-          ERROR_MESSAGE.NOT_EXIST.replace('{0}', 'Post'),
-        );
-      }
-
-      throw error;
+      throw mapPrismaError(error, 'Post');
     }
   }
 
@@ -145,16 +137,7 @@ export class PostService {
         where: { id },
       });
     } catch (error) {
-      if (
-        error instanceof PrismaClientKnownRequestError &&
-        error.code == PrismaError.RecordDoesNotExist
-      ) {
-        throw new BadRequestException(
-          ERROR_MESSAGE.NOT_EXIST.replace('{0}', 'Post'),
-        );
-      }
-
-      throw error;
+      throw mapPrismaError(error, 'Post');
     }
   }
 }

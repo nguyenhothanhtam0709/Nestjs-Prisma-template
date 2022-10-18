@@ -15,7 +15,7 @@ import { QueryPostDto } from './DTO/queryPost.dto';
 import { UpdatePostDto } from './DTO/updatePost.dto';
 import { PostService } from './post.service';
 
-@Controller('/post')
+@Controller('/posts')
 @ApiTags('Post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
