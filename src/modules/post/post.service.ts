@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from '../prisma/prisma.service';
+import { POST_JOIN_AND_SELECT } from './const/post';
 import { CreatePostDto } from './DTO/createPost.dto';
 import { QueryPostDto } from './DTO/queryPost.dto';
 import { UpdatePostDto } from './DTO/updatePost.dto';
@@ -18,32 +19,36 @@ import { UpdatePostDto } from './DTO/updatePost.dto';
 export class PostService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(data: CreatePostDto) {
-    const { medias, ...postData } = data;
+  async create(data: CreatePostDto) {
+    try {
+      const { medias, categories, ...postData } = data;
 
-    const createdData = medias?.length
-      ? {
-          ...postData,
-          medias: {
-            create: medias,
-          },
-        }
-      : postData;
+      const createdData: any = medias?.length
+        ? {
+            ...postData,
+            medias: {
+              create: medias,
+            },
+          }
+        : postData;
+      createdData.categories = {
+        connect: categories.map((i) => ({ id: i })),
+      };
 
-    return this.prisma.post.create({
-      data: createdData,
-      include: {
-        medias: true,
-      },
-    });
+      const post = await this.prisma.post.create({
+        data: createdData,
+        include: POST_JOIN_AND_SELECT,
+      });
+      return post;
+    } catch (error) {
+      throw mapPrismaError(error, 'Category');
+    }
   }
 
   async getById(id: number) {
     const post = await this.prisma.post.findUnique({
       where: { id },
-      include: {
-        medias: true,
-      },
+      include: POST_JOIN_AND_SELECT,
     });
     if (!post) {
       throw new NotFoundException(
@@ -71,9 +76,7 @@ export class PostService {
 
     const posts = await this.prisma.post.findMany({
       where: findQuery,
-      include: {
-        medias: true,
-      },
+      include: POST_JOIN_AND_SELECT,
       skip: pageSize * (pageIndex - 1),
       take: pageSize,
     });
@@ -121,9 +124,7 @@ export class PostService {
       const post = await this.prisma.post.update({
         where: { id },
         data: updatedData,
-        include: {
-          medias: true,
-        },
+        include: POST_JOIN_AND_SELECT,
       });
       return post;
     } catch (error) {

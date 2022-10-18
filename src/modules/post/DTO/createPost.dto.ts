@@ -14,7 +14,7 @@ import {
 } from 'class-validator';
 
 export class CreateMediaDto {
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, example: 'abc.com/xyz' })
   @IsNotEmpty()
   @IsUrl()
   url: string;
@@ -47,5 +47,12 @@ export class CreatePostDto {
   @ArrayMinSize(1)
   @ValidateNested({ each: true })
   @Type(() => CreateMediaDto)
-  medias: Array<CreateMediaDto>;
+  medias?: Array<CreateMediaDto>;
+
+  @ApiProperty({ required: false, type: Number, isArray: true })
+  @IsNotEmpty()
+  @IsArray()
+  @IsNumber({ allowNaN: false, allowInfinity: false }, { each: true })
+  @ArrayMinSize(1)
+  categories: number[];
 }
