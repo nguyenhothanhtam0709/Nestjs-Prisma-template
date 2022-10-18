@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { PostModule } from '@modules/post/post.module';
 import { PrismaModule } from '@modules/prisma/prisma.module';
 import { CategoryModule } from '@modules/category/category.module';
+import { FileUploadModule } from '@modules/fileUpload/fileUpload.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CategoryModule } from '@modules/category/category.module';
     PrismaModule,
     PostModule,
     CategoryModule,
+    FileUploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

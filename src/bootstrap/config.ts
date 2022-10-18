@@ -27,5 +27,9 @@ export const registerConfigModule = () =>
       [ENV_VAR_NAMES.GLOBAL_PREFIX]: joi
         .string()
         .default(DEFAULT_GLOBAL_PREFIX),
+      [ENV_VAR_NAMES.AWS_BUCKET_NAME]: joi.string().required(),
+      [ENV_VAR_NAMES.AWS_BUCKET_REGION]: joi.string().required(),
+      [ENV_VAR_NAMES.S3_ACCESS_KEY_ID]: joi.string().required(),
+      [ENV_VAR_NAMES.S3_SECRET_ACCESS_KEY]: joi.string().required(),
     }),
   });
