@@ -3,6 +3,8 @@ export const convertDateToTimestamp = (date: Date): number =>
 
 export const getCurentTimestamp = () => Math.floor(Date.now() / 1000);
 
+export const getCurentTimestampMs = () => Date.now();
+
 /**
  *  Sleep process
  *
