@@ -18,14 +18,31 @@ export class PostService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(data: CreatePostDto) {
+    const { medias, ...postData } = data;
+
+    const createdData = medias?.length
+      ? {
+          ...postData,
+          medias: {
+            create: medias,
+          },
+        }
+      : postData;
+
     return this.prisma.post.create({
-      data,
+      data: createdData,
+      include: {
+        medias: true,
+      },
     });
   }
 
   async getById(id: number) {
     const post = await this.prisma.post.findUnique({
       where: { id },
+      include: {
+        medias: true,
+      },
     });
     if (!post) {
       throw new NotFoundException(
@@ -53,6 +70,9 @@ export class PostService {
 
     const posts = await this.prisma.post.findMany({
       where: findQuery,
+      include: {
+        medias: true,
+      },
       skip: pageSize * (pageIndex - 1),
       take: pageSize,
     });
@@ -63,7 +83,47 @@ export class PostService {
 
   async update(id: number, data: UpdatePostDto) {
     try {
-      const post = await this.prisma.post.update({ where: { id }, data });
+      const { medias, ...postData } = data;
+
+      const mediasQuery: Record<string, any> = {};
+      if (medias?.length) {
+        const ids = medias.map((i) => i?.id).filter((i) => i);
+        const createPostData = medias.filter((i) => !i?.id);
+        const updatePostData = medias.filter((i) => i?.id);
+
+        if (ids?.length) {
+          mediasQuery.deleteMany = {
+            id: {
+              not: {
+                in: ids,
+              },
+            },
+          };
+        }
+
+        if (createPostData?.length) {
+          mediasQuery.create = createPostData;
+        }
+
+        if (updatePostData?.length) {
+          mediasQuery.update = updatePostData;
+        }
+      } else {
+        mediasQuery.deleteMany = {};
+      }
+
+      const updatedData: Record<string, any> = {
+        ...postData,
+        medias: mediasQuery,
+      };
+
+      const post = await this.prisma.post.update({
+        where: { id },
+        data: updatedData,
+        include: {
+          medias: true,
+        },
+      });
       return post;
     } catch (error) {
       if (
@@ -81,7 +141,9 @@ export class PostService {
 
   async delete(id: number) {
     try {
-      await this.prisma.post.delete({ where: { id } });
+      await this.prisma.post.delete({
+        where: { id },
+      });
     } catch (error) {
       if (
         error instanceof PrismaClientKnownRequestError &&
