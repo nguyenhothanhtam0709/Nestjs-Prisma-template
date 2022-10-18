@@ -15,7 +15,7 @@ const typeValidator = {
     return isInt(value);
   },
   'Array<String>': function (value: any, args: ValidationArguments) {
-    return isArray(value) && value.some((i) => isString(i));
+    return isArray(value) && value.every((i) => isString(i));
   },
 };
 
