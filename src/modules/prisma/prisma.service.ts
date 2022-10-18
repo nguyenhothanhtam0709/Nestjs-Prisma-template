@@ -63,19 +63,13 @@ export class PrismaService
 
   private bindInfoEvent() {
     this.$on('info', (event: Prisma.LogEvent) => {
-      this.logger.log(
-        `Message: ${event.message} - Timestamp: ${event.timestamp}`,
-        'Prisma Info',
-      );
+      this.logger.log(`Message: ${event.message}`, 'Prisma Info');
     });
   }
 
   private bindErrorEvent() {
     this.$on('error', (event: Prisma.LogEvent) => {
-      this.logger.log(
-        `Message: ${event.message} - Timestamp: ${event.timestamp}`,
-        'Prisma Error',
-      );
+      this.logger.log(`Message: ${event.message}`, 'Prisma Error');
     });
   }
 
