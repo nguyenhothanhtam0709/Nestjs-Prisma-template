@@ -5,9 +5,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostModule } from '@modules/post/post.module';
 import { PrismaModule } from '@modules/prisma/prisma.module';
+import { CategoryModule } from '@modules/category/category.module';
 
 @Module({
-  imports: [registerConfigModule(), LoggerModule, PrismaModule, PostModule],
+  imports: [
+    registerConfigModule(),
+    LoggerModule,
+    PrismaModule,
+    PostModule,
+    CategoryModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

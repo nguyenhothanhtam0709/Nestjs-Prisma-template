@@ -11,7 +11,34 @@ datasource db {
 }
 
 model Post {
-  id        Int      @default(autoincrement()) @id
-  title     String
-  content   String
+  id      Int    @id @default(autoincrement())
+  title   String
+  content String
+
+  categories Category[]
+  medias     Media[]
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime? @updatedAt @db.Timestamptz(3)
+}
+
+model Media {
+  id     Int    @id @default(autoincrement())
+  url    String
+  type   Int    @db.SmallInt
+  postId Int
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  // Relation
+  Post Post? @relation(fields: [postId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique @db.VarChar(255)
+  posts Post[]
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime? @updatedAt @db.Timestamptz(3)
 }
