@@ -57,4 +57,11 @@ export class UpdatePostDto {
   @ValidateNested({ each: true })
   @Type(() => UpdateMediaDto)
   medias?: Array<UpdateMediaDto>;
+
+  @ApiProperty({ required: false, type: Number, isArray: true })
+  @IsNotEmpty()
+  @IsArray()
+  @IsNumber({ allowNaN: false, allowInfinity: false }, { each: true })
+  @ArrayMinSize(1)
+  categories: number[];
 }

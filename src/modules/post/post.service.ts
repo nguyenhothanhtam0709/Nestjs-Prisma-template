@@ -97,7 +97,7 @@ export class PostService {
 
   async update(id: number, data: UpdatePostDto) {
     try {
-      const { medias, ...postData } = data;
+      const { medias, categories, ...postData } = data;
 
       const mediasQuery: Record<string, any> = {};
       if (medias?.length) {
@@ -126,9 +126,16 @@ export class PostService {
         mediasQuery.deleteMany = {};
       }
 
+      const categoriesQuery = {
+        set: categories.map((i) => ({
+          id: i,
+        })),
+      };
+
       const updatedData: Record<string, any> = {
         ...postData,
         medias: mediasQuery,
+        categories: categoriesQuery,
       };
 
       const post = await this.prisma.post.update({
