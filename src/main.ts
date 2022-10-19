@@ -9,7 +9,7 @@ import { AppModule } from './app.module';
 import { customExceptionFactory } from './bootstrap/exception';
 import { configLogger } from './bootstrap/logger';
 import { setupSwagger } from './bootstrap/swagger';
-import * as morgan from 'morgan';
+import morgan from 'morgan';
 import helmet from 'helmet';
 
 async function bootstrap() {

@@ -1,11 +1,23 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import {
+  S3Client,
+  PutObjectCommand,
+  CreateMultipartUploadCommand,
+  CreateMultipartUploadCommandInput,
+  CreateMultipartUploadCommandOutput,
+  UploadPartCommand,
+  CompleteMultipartUploadCommand,
+} from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { DEFAULT_PRESIGNED_URL_EXPIRE } from '@commons/const/s3';
 import { ENV_VAR_NAMES } from '@commons/enums/env';
 import { S3_ACL_ENUM } from '@commons/enums/s3';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { FinalizeMultipartUploadDto } from './DTO/finalizeMultipartUpload.dto';
+import { GetMultipartUploadPresignedUrlDto } from './DTO/getMultipartUploadPresignedUrl.dto';
 import { GetPutObjectPregisnedUrlDto } from './DTO/getPutObjectPresignedUrl.dto';
+import { InitMultipartUploadDto } from './DTO/initMultipartUpload.dto';
+import orderBy from 'lodash.orderby';
 
 @Injectable()
 export class S3Service {
@@ -40,5 +52,67 @@ export class S3Service {
     });
 
     return url;
+  }
+
+  async initMultipartUpload(data: InitMultipartUploadDto) {
+    const command = new CreateMultipartUploadCommand({
+      Bucket:
+        data?.bucket ||
+        this.configService.get<string>(ENV_VAR_NAMES.AWS_BUCKET_NAME),
+      ACL: data?.ACL || S3_ACL_ENUM.PUBLIC_READ,
+      Key: data.key,
+    });
+
+    const result = await this.s3.send<
+      CreateMultipartUploadCommandInput,
+      CreateMultipartUploadCommandOutput
+    >(command);
+    return result;
+  }
+
+  async getMultipartUploadPresignedUrl(
+    data: GetMultipartUploadPresignedUrlDto,
+  ) {
+    const {
+      bucket = this.configService.get<string>(ENV_VAR_NAMES.AWS_BUCKET_NAME),
+      key,
+      uploadId,
+      partNumber,
+    } = data;
+
+    const command = new UploadPartCommand({
+      Bucket: bucket,
+      Key: key,
+      UploadId: uploadId,
+      PartNumber: partNumber,
+    });
+
+    const url = await getSignedUrl(this.s3, command, {
+      expiresIn: 1200,
+    });
+    return url;
+  }
+
+  async finalizeMultipartUpload(data: FinalizeMultipartUploadDto) {
+    const {
+      bucket = this.configService.get<string>(ENV_VAR_NAMES.AWS_BUCKET_NAME),
+      fileKey,
+      fileId,
+      parts: _parts,
+    } = data;
+
+    const parts = orderBy(_parts, ['PartNumber'], ['asc']);
+
+    const command = new CompleteMultipartUploadCommand({
+      Bucket: bucket,
+      Key: fileKey,
+      UploadId: fileId,
+      MultipartUpload: {
+        Parts: parts,
+      },
+    });
+
+    const result = await this.s3.send(command);
+    return result;
   }
 }
