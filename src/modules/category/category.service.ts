@@ -3,7 +3,11 @@ import { PaginateResult } from '@commons/DTO/paginate';
 import { ERROR_MESSAGE } from '@commons/enums/errorMessage';
 import { mapPrismaError } from '@commons/utils/error';
 import { PrismaService } from '@modules/prisma/prisma.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCategoryDto } from './DTO/createCategory.dto';
 import { QueryCategoryDto } from './DTO/queryCategory.dto';
 import { UpdateCategoryDto } from './DTO/updateCategory.dto';
@@ -15,6 +19,16 @@ export class CategoryService {
   async create(data: CreateCategoryDto) {
     return this.prisma.category.create({
       data,
+      select: {
+        id: true,
+        name: true,
+        superCategory: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
   }
 
@@ -35,6 +49,10 @@ export class CategoryService {
 
     const categories = await this.prisma.category.findMany({
       where: query,
+      select: {
+        id: true,
+        name: true,
+      },
       skip: pageSize * (pageIndex - 1),
       take: pageSize,
     });
@@ -47,6 +65,22 @@ export class CategoryService {
     const category = await this.prisma.category.findUnique({
       where: {
         id,
+      },
+      select: {
+        id: true,
+        name: true,
+        superCategory: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        subcategories: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
 
@@ -61,9 +95,35 @@ export class CategoryService {
 
   async update(id: number, data: UpdateCategoryDto) {
     try {
+      if (data?.superCategoryId) {
+        const superCategory = await this.prisma.category.findUnique({
+          where: {
+            id: data.superCategoryId,
+          },
+        });
+        if (!superCategory) {
+          throw new BadRequestException(
+            ERROR_MESSAGE.NOT_EXIST.replace(
+              '{0}',
+              `Category ${data.superCategoryId}`,
+            ),
+          );
+        }
+      }
+
       const category = await this.prisma.category.update({
         where: { id },
-        data,
+        data: data,
+        select: {
+          id: true,
+          name: true,
+          superCategory: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
       });
       return category;
     } catch (error) {

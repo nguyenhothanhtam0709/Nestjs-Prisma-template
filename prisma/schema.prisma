@@ -35,9 +35,14 @@ model Media {
 }
 
 model Category {
-  id    Int    @id @default(autoincrement())
-  name  String @unique @db.VarChar(255)
-  posts Post[]
+  id              Int    @id @default(autoincrement())
+  name            String @unique @db.VarChar(255)
+  superCategoryId Int?
+
+  // Relation
+  posts         Post[]
+  superCategory Category?  @relation(name: "super_category", fields: [superCategoryId], references: [id])
+  subcategories Category[] @relation(name: "super_category")
 
   createdAt DateTime  @default(now()) @db.Timestamptz(3)
   updatedAt DateTime? @updatedAt @db.Timestamptz(3)

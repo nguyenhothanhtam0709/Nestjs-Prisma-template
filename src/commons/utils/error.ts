@@ -19,9 +19,10 @@ export const mapPrismaError = (
     return error;
   }
 
-  const { type, message } = HttpPrismaError[error.code];
-  if (type) {
-    return new type(message.replace('{0}', name));
+  const errorResolver = HttpPrismaError[error.code];
+  if (errorResolver) {
+    const { type, message } = errorResolver;
+    return new type(message?.replace('{0}', name) || error?.message);
   }
 
   return error;
