@@ -1,16 +1,22 @@
 import {
   Controller,
+  Get,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FileUploadDto } from './DTO/fileUpload.dto';
+import { GetUploadFilePresignedUrl } from './DTO/getUploadPresignedUrl.dto';
+import { FileUploadService } from './fileUpload.service';
 
 @ApiTags('File Upload')
 @Controller('file-upload')
 export class FileUploadController {
+  constructor(private readonly fileUploadService: FileUploadService) {}
+
   @Post('/upload')
   @ApiOperation({
     summary: 'Upload file',
@@ -30,5 +36,14 @@ export class FileUploadController {
       mimetype: file.mimetype,
       size: file.size,
     };
+  }
+
+  @Get('upload-presigned-url')
+  @ApiOperation({
+    summary: 'Upload presigned url',
+    description: 'Get S3 presigned url for upload file',
+  })
+  getUploadPresignedUrl(@Query() query: GetUploadFilePresignedUrl) {
+    return this.fileUploadService.getUploadPresignedUrl(query);
   }
 }
