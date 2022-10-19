@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsNumberString, Min, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsNumberString,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 export class InitMultipartUploadDto {
   @ApiProperty({ required: true })
@@ -12,7 +18,8 @@ export class InitMultipartUploadDto {
 export class GetMultipartSignedUrlDto {
   @ApiProperty({ required: true })
   @IsNotEmpty()
-  @Transform(({ value }) => Number(value))
+  @IsNumber()
+  @Min(2)
   partNumber: number;
 
   @ApiProperty({ required: true })

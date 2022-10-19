@@ -35,6 +35,8 @@ async function bootstrap() {
     new ValidationPipe({
       transform: true,
       exceptionFactory: customExceptionFactory,
+      transformOptions: { enableImplicitConversion: true },
+      forbidNonWhitelisted: true,
     }),
   );
 
