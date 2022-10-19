@@ -17,6 +17,7 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "esModuleInterop": true,
     "paths": {
       "@commons/*": ["./src/commons/*"],
       "@bootstrap": ["./src/bootstrap"],

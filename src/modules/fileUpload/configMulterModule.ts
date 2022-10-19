@@ -6,7 +6,7 @@ import {
 } from '@commons/filters/audioFile.filter';
 import { ConfigService } from '@nestjs/config';
 import { MulterModule, MulterModuleOptions } from '@nestjs/platform-express';
-import * as multerS3 from 'multer-s3';
+import multerS3 from 'multer-s3';
 import { S3Module } from '@modules/s3/s3.module';
 import { S3Service } from '@modules/s3/s3.service';
 
