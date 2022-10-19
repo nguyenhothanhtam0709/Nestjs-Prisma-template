@@ -1,4 +1,3 @@
-import { S3Client } from '@aws-sdk/client-s3';
 import { UPLOAD_FILE_SIZE_LIMIT } from '@commons/const/fileUpload';
 import { ENV_VAR_NAMES } from '@commons/enums/env';
 import {
@@ -8,25 +7,18 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { MulterModule, MulterModuleOptions } from '@nestjs/platform-express';
 import * as multerS3 from 'multer-s3';
-import { Request } from 'express';
+import { S3Module } from '@modules/s3/s3.module';
+import { S3Service } from '@modules/s3/s3.service';
 
 export const configMulterModule = () => {
   return MulterModule.registerAsync({
-    inject: [ConfigService],
+    imports: [S3Module],
+    inject: [ConfigService, S3Service],
     useFactory: async (
       configService: ConfigService,
+      s3Service: S3Service,
     ): Promise<MulterModuleOptions> => {
-      const s3 = new S3Client({
-        region: configService.get<string>(ENV_VAR_NAMES.AWS_BUCKET_REGION),
-        credentials: {
-          accessKeyId: configService.get<string>(
-            ENV_VAR_NAMES.S3_ACCESS_KEY_ID,
-          ),
-          secretAccessKey: configService.get<string>(
-            ENV_VAR_NAMES.S3_SECRET_ACCESS_KEY,
-          ),
-        },
-      });
+      const s3 = s3Service.getClient();
 
       const options: MulterModuleOptions = {
         storage: multerS3({

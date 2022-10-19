@@ -7,6 +7,7 @@ import { PostModule } from '@modules/post/post.module';
 import { PrismaModule } from '@modules/prisma/prisma.module';
 import { CategoryModule } from '@modules/category/category.module';
 import { FileUploadModule } from '@modules/fileUpload/fileUpload.module';
+import { S3Module } from '@modules/s3/s3.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { FileUploadModule } from '@modules/fileUpload/fileUpload.module';
     PostModule,
     CategoryModule,
     FileUploadModule,
+    S3Module,
   ],
   controllers: [AppController],
   providers: [AppService],

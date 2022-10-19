@@ -744,6 +744,21 @@
     "@aws-sdk/types" "3.190.0"
     tslib "^2.3.1"
 
+"@aws-sdk/s3-request-presigner@^3.190.0":
+  version "3.190.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/s3-request-presigner/-/s3-request-presigner-3.190.0.tgz#5eaaf3446a3be45d46b08113f0eb69619434ab69"
+  integrity sha512-Ae1xElBPBtMoJK69wVM/6rSiD3os6McT3vtoFS8anyBJOrmdimZfbMYtWp8ywLH6gb3alJrqKLklPo52KXhq3w==
+  dependencies:
+    "@aws-sdk/middleware-endpoint" "3.190.0"
+    "@aws-sdk/middleware-sdk-s3" "3.190.0"
+    "@aws-sdk/protocol-http" "3.190.0"
+    "@aws-sdk/signature-v4-multi-region" "3.190.0"
+    "@aws-sdk/smithy-client" "3.190.0"
+    "@aws-sdk/types" "3.190.0"
+    "@aws-sdk/util-create-request" "3.190.0"
+    "@aws-sdk/util-format-url" "3.190.0"
+    tslib "^2.3.1"
+
 "@aws-sdk/service-error-classification@3.190.0":
   version "3.190.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/service-error-classification/-/service-error-classification-3.190.0.tgz#b1e232abfdc98fcf6f12dcbe50f9b9141fe53d42"
@@ -854,6 +869,16 @@
   dependencies:
     tslib "^2.3.1"
 
+"@aws-sdk/util-create-request@3.190.0":
+  version "3.190.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-create-request/-/util-create-request-3.190.0.tgz#ebbab51e68313d98501405b61bf8639d3e71f86a"
+  integrity sha512-GOLwJ01uF45bUPAthISC0NlOZE0qMV5MKXbA1r+qh3o7KGx53QVq4qLzZYcFRgPpNVtRml0LpWGhQJgfZ2t53w==
+  dependencies:
+    "@aws-sdk/middleware-stack" "3.190.0"
+    "@aws-sdk/smithy-client" "3.190.0"
+    "@aws-sdk/types" "3.190.0"
+    tslib "^2.3.1"
+
 "@aws-sdk/util-defaults-mode-browser@3.190.0":
   version "3.190.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/util-defaults-mode-browser/-/util-defaults-mode-browser-3.190.0.tgz#b544c978ae4e5a7cf12bb7975c0199dbe3517c85"
@@ -873,6 +898,15 @@
     "@aws-sdk/credential-provider-imds" "3.190.0"
     "@aws-sdk/node-config-provider" "3.190.0"
     "@aws-sdk/property-provider" "3.190.0"
+    "@aws-sdk/types" "3.190.0"
+    tslib "^2.3.1"
+
+"@aws-sdk/util-format-url@3.190.0":
+  version "3.190.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-format-url/-/util-format-url-3.190.0.tgz#21743ff7d8dbf3178c247f28a5c4c0fe677d558a"
+  integrity sha512-YZhE13LnzskDPyZh8hnqD/KyPxfqVgea1jzKmMcLSTB2doIo7BAS+EN96C+Gl7hZMayUbSYiqLDiwmgPevfRxw==
+  dependencies:
+    "@aws-sdk/querystring-builder" "3.190.0"
     "@aws-sdk/types" "3.190.0"
     tslib "^2.3.1"
 
