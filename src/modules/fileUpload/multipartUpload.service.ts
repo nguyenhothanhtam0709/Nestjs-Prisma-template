@@ -38,7 +38,7 @@ export class MultipartUploadService {
   }
 
   async getMultipartUploadPresignedUrls(data: GetMultipartUploadSignedUrlDto) {
-    const { fileKey, fileId, parts } = data;
+    const { parts } = data;
 
     const result = await Promise.all(
       Array.from({ length: parts }, async (v, k) => {

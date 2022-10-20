@@ -4,15 +4,7 @@ import {
   MIN_PAGE_SIZE,
 } from '@commons/const/paginate';
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import {
-  IsInt,
-  IsNumber,
-  IsNumberString,
-  IsOptional,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsNumber, IsOptional, Max, Min } from 'class-validator';
 
 export class PaginateQueryDto {
   @ApiProperty({
