@@ -31,5 +31,8 @@ export const registerConfigModule = () =>
       [ENV_VAR_NAMES.AWS_BUCKET_REGION]: joi.string().required(),
       [ENV_VAR_NAMES.S3_ACCESS_KEY_ID]: joi.string().required(),
       [ENV_VAR_NAMES.S3_SECRET_ACCESS_KEY]: joi.string().required(),
+      [ENV_VAR_NAMES.DYNAMODB_REGION]: joi.string().required(),
+      [ENV_VAR_NAMES.DYNAMODB_ACCESS_KEY_ID]: joi.string().required(),
+      [ENV_VAR_NAMES.DYNAMODB_SECRET_ACCESS_KEY]: joi.string().required(),
     }),
   });
