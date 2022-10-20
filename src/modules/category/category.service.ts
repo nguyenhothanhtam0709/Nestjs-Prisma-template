@@ -2,7 +2,7 @@ import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@commons/const/paginate';
 import { PaginateResult } from '@commons/DTO/paginate';
 import { ERROR_MESSAGE } from '@commons/enums/errorMessage';
 import { mapPrismaError } from '@commons/utils/error';
-import { PrismaService } from '@modules/prisma/prisma.service';
+import { PrismaService } from '@modules/_shared/prisma/prisma.service';
 import {
   BadRequestException,
   Injectable,

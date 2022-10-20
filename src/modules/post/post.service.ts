@@ -3,7 +3,7 @@ import { PaginateResult } from '@commons/DTO/paginate';
 import { ERROR_MESSAGE } from '@commons/enums/errorMessage';
 import { mapPrismaError } from '@commons/utils/error';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../_shared/prisma/prisma.service';
 import { POST_JOIN_AND_SELECT } from './const/post';
 import { CreatePostDto } from './DTO/createPost.dto';
 import { QueryPostDto } from './DTO/queryPost.dto';

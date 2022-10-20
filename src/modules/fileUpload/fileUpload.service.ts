@@ -1,5 +1,5 @@
 import { getCurentTimestampMs } from '@commons/utils/time';
-import { S3Service } from '@modules/s3/s3.service';
+import { S3Service } from '@modules/_shared/s3/s3.service';
 import { Injectable } from '@nestjs/common';
 import { GetUploadFilePresignedUrl } from './DTO/getUploadPresignedUrl.dto';
 import mime from 'mime-types';

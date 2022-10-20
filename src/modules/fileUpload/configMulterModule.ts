@@ -7,8 +7,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { MulterModule, MulterModuleOptions } from '@nestjs/platform-express';
 import multerS3 from 'multer-s3';
-import { S3Module } from '@modules/s3/s3.module';
-import { S3Service } from '@modules/s3/s3.service';
+import { S3Module } from '@modules/_shared/s3/s3.module';
+import { S3Service } from '@modules/_shared/s3/s3.service';
 
 export const configMulterModule = () => {
   return MulterModule.registerAsync({

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { FileUploadController } from './fileUpload.controller';
 import { configMulterModule } from './configMulterModule';
-import { S3Module } from '@modules/s3/s3.module';
+import { S3Module } from '@modules/_shared/s3/s3.module';
 import { FileUploadService } from './fileUpload.service';
 import { MultipartUploadService } from './multipartUpload.service';
 import { MultipartUploadController } from './multipartUpload.controller';
