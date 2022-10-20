@@ -7,6 +7,7 @@ import {
   GetMultipartUploadSignedUrlDto,
   InitMultipartUploadDto,
 } from './DTO/multipartUpload.dto';
+import mime from 'mime-types';
 
 @Injectable()
 export class MultipartUploadService {
@@ -14,9 +15,11 @@ export class MultipartUploadService {
 
   async initMultipartUpload(data: InitMultipartUploadDto) {
     const key = `${getCurentTimestampMs()}-${data.key}`;
+    const mimeType = mime.lookup(data.key);
     const initUploadData = await this.s3Service.initMultipartUpload({
       ...data,
       key,
+      mimeType,
     });
     const { UploadId: fileId, Key: fileKey } = initUploadData;
     return { fileId, fileKey };

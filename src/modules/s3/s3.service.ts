@@ -6,6 +6,7 @@ import {
   CreateMultipartUploadCommandOutput,
   UploadPartCommand,
   CompleteMultipartUploadCommand,
+  PutObjectCommandInput,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { DEFAULT_PRESIGNED_URL_EXPIRE } from '@commons/const/s3';
@@ -40,13 +41,15 @@ export class S3Service {
   }
 
   async getPutObjectPresignedUrl(data: GetPutObjectPregisnedUrlDto) {
-    const command = new PutObjectCommand({
+    const input: PutObjectCommandInput = {
       Bucket:
         data?.bucket ||
         this.configService.get<string>(ENV_VAR_NAMES.AWS_BUCKET_NAME),
       ACL: data?.ACL || S3_ACL_ENUM.PUBLIC_READ,
       Key: data.key,
-    });
+      ...(data?.mimeType ? { ContentType: data.mimeType } : {}),
+    };
+    const command = new PutObjectCommand(input);
     const url = await getSignedUrl(this.s3, command, {
       expiresIn: data?.expiresIn || DEFAULT_PRESIGNED_URL_EXPIRE,
     });
@@ -55,13 +58,15 @@ export class S3Service {
   }
 
   async initMultipartUpload(data: InitMultipartUploadDto) {
-    const command = new CreateMultipartUploadCommand({
+    const input: CreateMultipartUploadCommandInput = {
       Bucket:
         data?.bucket ||
         this.configService.get<string>(ENV_VAR_NAMES.AWS_BUCKET_NAME),
       ACL: data?.ACL || S3_ACL_ENUM.PUBLIC_READ,
       Key: data.key,
-    });
+      ...(data?.mimeType ? { ContentType: data.mimeType } : {}),
+    };
+    const command = new CreateMultipartUploadCommand(input);
 
     const result = await this.s3.send<
       CreateMultipartUploadCommandInput,
