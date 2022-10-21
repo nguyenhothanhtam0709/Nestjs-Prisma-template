@@ -10,6 +10,9 @@ import { FileUploadModule } from '@modules/fileUpload/fileUpload.module';
 import { S3Module } from '@modules/_shared/s3/s3.module';
 import { DynamoDBModule } from '@modules/_shared/dynamodb/dynamodb.module';
 import { FoodModule } from '@modules/_example/food/food.module';
+import { SqsModule } from '@modules/_shared/sqs/sqs.module';
+import { SqsConsumerModule } from '@modules/sqs-consumer/sqsConsumer.module';
+import { SqsPublisherModule } from '@modules/sqs-publisher/sqsPublisher.module';
 
 @Module({
   imports: [
@@ -21,7 +24,10 @@ import { FoodModule } from '@modules/_example/food/food.module';
     FileUploadModule,
     S3Module,
     DynamoDBModule,
+    SqsModule,
     FoodModule,
+    SqsPublisherModule,
+    SqsConsumerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

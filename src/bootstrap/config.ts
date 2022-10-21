@@ -34,5 +34,9 @@ export const registerConfigModule = () =>
       [ENV_VAR_NAMES.DYNAMODB_REGION]: joi.string().required(),
       [ENV_VAR_NAMES.DYNAMODB_ACCESS_KEY_ID]: joi.string().required(),
       [ENV_VAR_NAMES.DYNAMODB_SECRET_ACCESS_KEY]: joi.string().required(),
+      [ENV_VAR_NAMES.SQS_QUEUE_URL]: joi.string().required(),
+      [ENV_VAR_NAMES.SQS_REGION]: joi.string().required(),
+      [ENV_VAR_NAMES.SQS_ACCESS_KEY_ID]: joi.string().required(),
+      [ENV_VAR_NAMES.SQS_SECRET_ACCESS_KEY]: joi.string().required(),
     }),
   });
