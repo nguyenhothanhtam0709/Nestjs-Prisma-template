@@ -10,6 +10,10 @@ COPY nest-cli.json tsconfig.json tsconfig.prod.build.json tsconfig.build.json pa
 
 RUN yarn
 
+COPY ./prisma ./prisma
+
+RUN yarn prisma generate
+
 COPY ./src ./src
 
 RUN yarn build
@@ -20,8 +24,6 @@ RUN yarn build
 # Deploy stage
 ##################
 FROM node:16.17.1-alpine3.16 AS deployer
-
-ARG API_PORT
 
 RUN npm i -g pm2 prisma
 
@@ -34,7 +36,5 @@ RUN yarn install --prod
 RUN prisma generate
 
 COPY --from=builder /app/dist ./dist
-
-EXPOSE ${API_PORT}
 
 ENTRYPOINT ["pm2-runtime", "start", "pm2.config.js"]
