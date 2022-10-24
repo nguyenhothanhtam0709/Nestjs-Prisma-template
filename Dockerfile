@@ -29,7 +29,7 @@ RUN npm i -g pm2 prisma
 
 WORKDIR /app
 
-COPY pm2.config.js prisma package.json yarn.lock .env ./
+COPY pm2.config.js prisma package.json yarn.lock ./
 
 RUN yarn install --prod
 

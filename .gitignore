@@ -41,6 +41,7 @@ Log
 
 # env
 .env
+docker.env
 
 # pem
 *.pem
